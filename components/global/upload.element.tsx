@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -20,6 +20,7 @@ export default function UploadElement() {
     const [file, setFile] = useState<File | null>();
     const [btnStatus, setBtnStatus] = useState<boolean>(true);
     const [alertMsg, setAlertMsg] = useState<string>("");
+    const inputFileRef = useRef<HTMLInputElement>(null);
     const [blob, setBlob] = useState<PutBlobResult | null>(null);
     const AlertMsg: React.FC<AlertMsgProps> = ({ msg }) => {
         return (
@@ -34,18 +35,26 @@ export default function UploadElement() {
       };
       const handleUpload = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
-
-        if (!file) {
-            throw new Error('No file selected');
+      
+        if (!inputFileRef.current?.files) {
+          throw new Error("No file selected");
         }
-
-        const newBlob = await upload(file.name, file, {
-            access: 'public',
-            handleUploadUrl: '/api/upload',
-        });
-
+      
+        const file = inputFileRef.current.files[0];
+      
+        const response = await fetch(
+          `/api/avatar/upload?filename=${file.name}`,
+          {
+            method: 'POST',
+            body: file,
+          },
+        );
+      
+        const newBlob = (await response.json()) as PutBlobResult;
+      
         setBlob(newBlob);
-    }
+      };
+      
 
       const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
