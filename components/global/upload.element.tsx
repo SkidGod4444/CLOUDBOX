@@ -127,7 +127,7 @@ export default function UploadElement() {
           Blob url: <a href={blob.url}>{blob.url}</a>
         </div>
       )}
-    <Button disabled={btnStatus}>
+    <Button disabled={btnStatus} onClick={handleUpload}>
         <UploadCloud className="h-5 w-5 mr-2" /> Upload
     </Button>
     </div>
