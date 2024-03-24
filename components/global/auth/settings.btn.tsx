@@ -17,10 +17,13 @@ const handleUnAuth = () => {
   window.location.reload();
 };
 
-const CloudKey = localStorage.getItem("CloudKey");
+
 
 const handleCopy = () => {
-  navigator.clipboard.writeText(CloudKey ?? "");
+  const CloudKey = localStorage.getItem("CloudKey");
+  if (CloudKey) {
+    navigator.clipboard.writeText(CloudKey ?? "");
+  }
 };
 
 export default function SettingsBtn() {
@@ -43,7 +46,7 @@ export default function SettingsBtn() {
             disabled
             type="text"
             placeholder="CloudKey Not Found!"
-            value={CloudKey ?? ""}
+            value={ localStorage.getItem("CloudKey") ?? ""}
           />
           <Button
             type="submit"
