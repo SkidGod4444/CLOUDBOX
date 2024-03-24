@@ -20,7 +20,9 @@ export default function AuthBtn() {
   
   const handleContinue = () => {
     if (cloudKey.trim() !== '') {
+      if (typeof window !== 'undefined') {
       localStorage.setItem('CloudKey', cloudKey);
+      }
     }
     window.location.reload();
   };

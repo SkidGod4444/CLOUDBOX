@@ -14,23 +14,25 @@ export default function HomeNavbar() {
 
   useEffect(() => {
     // Check local storage for the presence of 'CloudKey' when the component mounts
+    if (typeof window !== 'undefined') {
     const cloudKey = localStorage.getItem('CloudKey');
     if (cloudKey) {
       setCloudKeyExists(true);
       PushUser(cloudKey.toString());
     } else {
       setCloudKeyExists(false);
-    }
+    }}
 
     // Add event listener for changes to local storage
     const handleStorageChange = () => {
+      if (typeof window !== 'undefined') {
       const updatedCloudKey = localStorage.getItem('CloudKey');
       if (updatedCloudKey) {
         setCloudKeyExists(true);
       } else {
         setCloudKeyExists(false);
       }
-    };
+    }};
 
     window.addEventListener('storage', handleStorageChange);
 
