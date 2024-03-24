@@ -4,7 +4,6 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { UploadCloud } from "lucide-react";
-import { upload } from '@vercel/blob/client';
 import { type PutBlobResult } from '@vercel/blob';
 import {
     Alert,
@@ -78,7 +77,7 @@ export default function UploadElement() {
                 "video/x-flv",       // FLV video
                 "video/webm"         // WEBM video
               ];              
-            const maxFileSize = 500 * 1024 * 1024; // 500MB in bytes
+            const maxFileSize = 2000 * 1024 * 1024; // 500MB in bytes
             console.log("DEBUGGING: File size:", selectedFile.size); // Debugging
             console.log("DEBUGGING: Allowed types:", allowedTypes); // Debugging
             if (
@@ -90,7 +89,7 @@ export default function UploadElement() {
             } else {
                 let errorMessage = "Please select a valid file (JPG, PNG, TXT, JSON, ZIP, GZIP, TAR, RAR, 7Z, MOV, WEBM, FLV, AVI, WAV or MP4, MP3) ";
                 if (selectedFile.size > maxFileSize) {
-                    errorMessage += "and ensure it is less than 500MB in size.";
+                    errorMessage += "and ensure it is less than 2000MB in size.";
                 }
                 setAlertMsg(errorMessage);
                 setBtnStatus(true);
@@ -102,7 +101,7 @@ export default function UploadElement() {
     <div className="flex flex-col space-y-4 items-center justify-center w-full">
       <Label
         htmlFor="dropzone-file"
-        className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary border-dashed rounded-lg cursor-pointer bg-muted/60 hover:bg-muted/30"
+        className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary hover:border-secondary border-dashed rounded-lg cursor-pointer bg-muted/60 hover:bg-muted/30"
       >
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           <svg
@@ -124,7 +123,7 @@ export default function UploadElement() {
             <span className="font-bold text-primary">Click to upload</span>
           </p>
           <p className="text-xs text-gray-500">
-          (MAX. 500MB)
+          (MAX. 2000MB)
           </p>
         </div>
         <Input onChange={handleFileChange} id="dropzone-file" type="file" className="hidden" required/>

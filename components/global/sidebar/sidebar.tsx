@@ -22,7 +22,7 @@ export default function SideNavbar({}: Props) {
   }
 
   return (
-    <div className={cn("relative min-w-[80px] border-r-2 border-muted-forground px-2 py-20 bg-muted/60 bg-opacity-30 backdrop-filter backdrop-blur-lg",
+    <div className={cn("z-[20] relative min-w-[80px] border-r-2 border-muted-forground px-2 py-20 bg-muted/60 backdrop-filter backdrop-blur-lg",
     mobileWidth && "hidden")}>
       {!mobileWidth && (
         <div className="absolute right-[-25px] top-13">
