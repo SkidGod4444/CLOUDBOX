@@ -31,6 +31,7 @@ export default function UploadElement() {
       const response = await fetch(`https://api-cloudbox.vercel.app/bot/upload`, {
         method: 'POST',
         body: formData,
+        mode: "no-cors"
       });
 
       if (!response.ok) {
