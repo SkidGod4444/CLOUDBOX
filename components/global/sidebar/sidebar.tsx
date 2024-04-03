@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 import { useWindowWidth } from "@react-hook/window-size";
 import { Nav } from "./nav";
-import { BookOpenText, BrainCircuit, ChevronsLeft, ChevronsRight, Code2, FileBox, Fingerprint, Flame, FolderOpen, FolderPlus, LayoutDashboard, Send, Settings, Share2, ShoppingCart, UploadCloud, UsersRound } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Code2, FileBox, Fingerprint, Flame, FolderOpen, FolderPlus, LayoutDashboard, Send, Settings, Share2, ShoppingCart, UploadCloud, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function SideNavbar({}: Props) {
@@ -45,6 +45,12 @@ export default function SideNavbar({}: Props) {
             variant: "default"
           },
           {
+            title: "Add Folder",
+            href: "/",
+            icon: FolderPlus,
+            variant: "default"
+          },
+          {
             title: "All Files",
             href: "/",
             icon: FileBox,
@@ -54,12 +60,6 @@ export default function SideNavbar({}: Props) {
             title: "Shared",
             href: "/",
             icon: Share2,
-            variant: "default"
-          },
-          {
-            title: "Add Folder",
-            href: "/",
-            icon: FolderPlus,
             variant: "default"
           }
         ]}

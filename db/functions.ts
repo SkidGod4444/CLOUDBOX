@@ -7,7 +7,7 @@ async function CreateUser(id: string) {
   const promise = AppwriteDB.createDocument(
     process.env.APPWRITE_DATABASE_ID! || "65d4e2cb945b18ce913c",
     "65d4e2edca42721b5705",
-    ID.unique(),
+    id,
     { id: id }
   );
   promise.then(
@@ -26,22 +26,17 @@ async function CheckUser(id: string) {
     "65d4e2edca42721b5705",
     [Query.equal("id", id)]
   );
-  promise.then(
-    function (response) {
-      return response;
-    },
-    function (error) {
-      console.log(error);
-    }
-  );
+  if (promise !== undefined) {
+    return promise;
+  }
 }
 
-async function CreateUpload(msgId: string, fileId: string, fileSize: string) {
+async function CreateUpload(msgId: string, fileId: string, fileSize: string, botType: string) {
   const promise = AppwriteDB.createDocument(
     process.env.APPWRITE_DATABASE_ID! || "65d4e2cb945b18ce913c",
     "65d4e325a9a679460393",
     fileId,
-    { msgId: msgId, fileId: fileId, fileSize: fileSize, name: msgId }
+    { msgId: msgId, fileId: fileId, fileSize: fileSize, name: msgId, botType: botType }
   );
   promise.then(
     function (response) {
