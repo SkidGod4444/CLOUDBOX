@@ -28,7 +28,7 @@ export default function UploadElement() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`/api/cloudbox/upload`, {
+      const response = await fetch(`https://api-cloudbox.vercel.app/bot/upload`, {
         method: 'POST',
         body: formData,
       });
