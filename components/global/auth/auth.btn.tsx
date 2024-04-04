@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { CheckUser, CreateUser, PushUser } from '@/db/functions';
 
 export default function AuthBtn() {
   const [cloudKey, setCloudKey] = useState('');
@@ -22,9 +23,12 @@ export default function AuthBtn() {
     if (cloudKey.trim() !== '') {
       if (typeof window !== 'undefined') {
       localStorage.setItem('CloudKey', cloudKey);
+      CreateUser(cloudKey)
       }
     }
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 5000);
   };
 
   return (

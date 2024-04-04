@@ -31,12 +31,23 @@ async function CheckUser(id: string) {
   }
 }
 
-async function CreateUpload(msgId: string, fileId: string, fileSize: string, botType: string) {
-  const promise = AppwriteDB.createDocument(
+async function CreateUpload(msgId: string, fileId: string, fileSize: string, botType: string, userId: string) {
+  const promise = AppwriteDB.updateDocument(
     process.env.APPWRITE_DATABASE_ID! || "65d4e2cb945b18ce913c",
-    "65d4e325a9a679460393",
-    fileId,
-    { msgId: msgId, fileId: fileId, fileSize: fileSize, name: msgId, botType: botType }
+    "65d4e2edca42721b5705",
+    userId,
+    {
+      uPLOADS: [
+        {
+          $id: msgId+msgId+fileSize,
+          msgId: msgId,
+          fileId: fileId,
+          fileSize: fileSize,
+          name: fileSize,
+          botType: botType,
+        },
+      ],
+    }
   );
   promise.then(
     function (response) {

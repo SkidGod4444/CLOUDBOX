@@ -8,7 +8,7 @@ import UploadPreview from './upload.preview';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
 import { toast, useToast } from '../ui/use-toast';
-import { Toast } from '../ui/toast';
+import { CreateUpload } from '@/db/functions';
 
 interface AlertMsgProps {
   msg: string;
@@ -28,12 +28,9 @@ export default function UploadElement() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const API_URL: string = process.env.CLOUDBOX_API!;
-
-      const response = await fetch(`${API_URL}/bot/upload`, {
+      const response = await fetch(`https://api-cloudbox.vercel.app/bot/upload`, {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors'
+        body: formData
       });
 
       if (!response.ok) {
@@ -41,17 +38,41 @@ export default function UploadElement() {
       }
 
       // Handle the response from the server as needed
+      const cloudKeyValue = () => {
+        if (typeof window !== 'undefined') {
+          return localStorage.getItem("CloudKey") ?? "";
+        }
+      }
+      const userId: string = cloudKeyValue() || "";
       const responseData = await response.json();
+      const { message_id, file_id, file_size, botType } = responseData;
+      // console.log(
+      //   String(message_id),
+      //   String(file_id),
+      //   String(file_size),
+      //   String(botType),
+      //   String(userId)
+      // );
       // console.log('Upload successful:', responseData);
-      setFile(null)
+      setFile(null);
+      setBtnStatus(true);
+      CreateUpload(
+        String(message_id),
+        String(file_id),
+        String(file_size),
+        String(botType),
+        String(userId)
+      );
       toast({
         title: "Notification",
         description: "Your file is now stored successfully!",
       });
+      // console.log('DEBUGGING: File uploaded successfully:', responseData); // Debugging
   
     } catch (error) {
       console.error('Error uploading file:', error);
       setFile(null)
+      setBtnStatus(true);
       setAlertMsg('Failed to upload file');
     }
   };
@@ -61,7 +82,7 @@ export default function UploadElement() {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      console.log('DEBUGGING: Selected file type:', selectedFile.type); // Debugging
+      // console.log('DEBUGGING: Selected file type:', selectedFile.type); // Debugging
       const allowedTypes = [
         'image/jpeg',
         'text/plain',
@@ -82,8 +103,8 @@ export default function UploadElement() {
         'video/webm', // WEBM video
       ];
       const maxFileSize = 2000 * 1024 * 1024; // 2000MB in bytes
-      console.log('DEBUGGING: File size:', selectedFile.size); // Debugging
-      console.log('DEBUGGING: File name:', selectedFile.name); // Debugging
+      // console.log('DEBUGGING: File size:', selectedFile.size); // Debugging
+      // console.log('DEBUGGING: File name:', selectedFile.name); // Debugging
       if (allowedTypes.includes(selectedFile.type) && selectedFile.size <= maxFileSize) {
         setFile(selectedFile);
         setBtnStatus(false);
