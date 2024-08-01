@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import AuthBtn from "../auth/auth.btn";
@@ -7,10 +6,12 @@ import { Logo } from "../logo";
 import SourceBtn from "./source.btn";
 import CommunityBtn from "./community.btn";
 import SettingsBtn from '../auth/settings.btn';
-import { PushUser } from '@/db/functions';
+import { useUser } from '@/context/user.context';
+// import { PushUser } from '@/db/functions';
 
 export default function HomeNavbar() {
   const [cloudKeyExists, setCloudKeyExists] = useState(false);
+  const {current} = useUser();
 
   useEffect(() => {
     // Check local storage for the presence of 'CloudKey' when the component mounts
@@ -18,7 +19,7 @@ export default function HomeNavbar() {
     const cloudKey = localStorage.getItem('CloudKey');
     if (cloudKey) {
       setCloudKeyExists(true);
-      PushUser(cloudKey.toString());
+      // PushUser(cloudKey.toString());
     } else {
       setCloudKeyExists(false);
     }}
@@ -49,10 +50,10 @@ export default function HomeNavbar() {
      <Logo />
      <div className='flex ml-auto items-center gap-3'>
       {/* Check if CloudKey exists in local storage */}
-      {cloudKeyExists ? null : <AuthBtn />}
+      {current ? null : <AuthBtn />}
       <SourceBtn />
       <CommunityBtn />
-      {cloudKeyExists ? <SettingsBtn /> : null}
+      {current ? <SettingsBtn /> : null}
      </div>
     </div>
   )

@@ -1,6 +1,6 @@
 "use client";
 import { useState, ChangeEvent } from 'react';
-import { UploadCloud } from 'lucide-react';
+import { Lock, UploadCloud } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
@@ -9,6 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
 import { toast, useToast } from '../ui/use-toast';
 import { CreateUpload } from '@/db/functions';
+import { useUser } from '@/context/user.context';
 
 interface AlertMsgProps {
   msg: string;
@@ -19,6 +20,7 @@ export default function UploadElement() {
   const [btnStatus, setBtnStatus] = useState<boolean>(true);
   const [alertMsg, setAlertMsg] = useState<string>('');
   const { toast } = useToast();
+  const {current} = useUser();
   const handleUpload = async () => {
     try {
       if (!file) {
@@ -130,26 +132,53 @@ export default function UploadElement() {
     );
   };
 
-  return (
-    <div className="flex flex-col space-y-4 items-center justify-center w-full">
-      <Label
-        htmlFor="dropzone-file"
-        className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary hover:border-secondary border-dashed rounded-lg cursor-pointer bg-muted/60 hover:bg-muted/30"
-      >
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-        <UploadCloud className="h-8 w-8 text-primary" />
-          <p className="mb-2 text-sm text-gray-500 ">
-            <span className="font-bold text-primary">Click to upload</span>
-          </p>
-          <p className="text-xs text-gray-500">(MAX. 2000MB)</p>
-        </div>
-        <Input onChange={handleFileChange} id="dropzone-file" type="file" className="hidden" required />
-      </Label>
-      {file && <UploadPreview file={file} removeFile={() => { setFile(null); setBtnStatus(true); }} />}
-      {alertMsg && <AlertMsg msg={alertMsg} />}
-      <Button disabled={btnStatus} onClick={handleUpload}>
-        <UploadCloud className="h-5 w-5 mr-2" /> Upload
-      </Button>
-    </div>
-  );
+  const authUser = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("CloudKey") ?? "";
+    }
+  }
+  if (current){
+    return (
+      <div className="flex flex-col space-y-4 items-center justify-center w-full">
+        <Label
+          htmlFor="dropzone-file"
+          className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary hover:border-secondary border-dashed rounded-lg cursor-pointer bg-muted/60 hover:bg-muted/30"
+        >
+          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+          <UploadCloud className="h-8 w-8 text-primary" />
+            <p className="mb-2 text-sm text-gray-500 ">
+              <span className="font-bold text-primary">Click to upload</span>
+            </p>
+            <p className="text-xs text-gray-500">(MAX. 2000MB)</p>
+          </div>
+          <Input onChange={handleFileChange} id="dropzone-file" type="file" className="hidden" required />
+        </Label>
+        {file && <UploadPreview file={file} removeFile={() => { setFile(null); setBtnStatus(true); }} />}
+        {alertMsg && <AlertMsg msg={alertMsg} />}
+        <Button disabled={btnStatus} onClick={handleUpload}>
+          <UploadCloud className="h-5 w-5 mr-2" /> Upload
+        </Button>
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex flex-col space-y-4 items-center justify-center w-full">
+        <Label
+          htmlFor="dropzone-file"
+          className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary hover:border-secondary border-dashed rounded-lg cursor-pointer bg-muted/60 hover:bg-muted/30"
+        >
+          <div className="flex flex-col items-center justify-center pt-5 pb-6 gap-2">
+          <Lock className="h-8 w-8 text-primary" />
+            <p className="mb-2 text-sm text-gray-500 ">
+              <span className="font-bold text-primary">Authorize To Upload</span>
+            </p>
+          </div>
+        </Label>
+        <Button disabled={btnStatus} onClick={handleUpload}>
+          <UploadCloud className="h-5 w-5 mr-2" /> Upload
+        </Button>
+      </div>
+    );
+  }
+  
 }

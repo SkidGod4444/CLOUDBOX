@@ -1,37 +1,45 @@
 import { ID, Query } from "appwrite";
-import { AppwriteDB } from "./config";
-import { configDotenv } from "dotenv";
-configDotenv();
+import { AppwriteDB, AppwriteUser } from "./config";
 
-async function CreateUser(id: string) {
+async function CreateUser(email: string) {
   const promise = AppwriteDB.createDocument(
     process.env.APPWRITE_DATABASE_ID! || "65d4e2cb945b18ce913c",
     "65d4e2edca42721b5705",
-    id,
-    { id: id }
+    ID.unique(),
+    {email: email }
   );
   promise.then(
     function (response) {
-      return response;
+      console.log(response);
+      return true;
     },
     function (error) {
       console.log(error);
+      return false;
     }
   );
 }
 
-async function CheckUser(id: string) {
+async function CheckUser(email: string) {
   const promise = AppwriteDB.listDocuments(
     process.env.APPWRITE_DATABASE_ID! || "65d4e2cb945b18ce913c",
     "65d4e2edca42721b5705",
-    [Query.equal("id", id)]
+    [Query.equal("email", email)]
   );
   if (promise !== undefined) {
-    return promise;
+    return true;
+  } else {
+    return false;
   }
 }
 
-async function CreateUpload(msgId: string, fileId: string, fileSize: string, botType: string, userId: string) {
+async function CreateUpload(
+  msgId: string,
+  fileId: string,
+  fileSize: string,
+  botType: string,
+  userId: string
+) {
   const promise = AppwriteDB.updateDocument(
     process.env.APPWRITE_DATABASE_ID! || "65d4e2cb945b18ce913c",
     "65d4e2edca42721b5705",
@@ -39,7 +47,7 @@ async function CreateUpload(msgId: string, fileId: string, fileSize: string, bot
     {
       uPLOADS: [
         {
-          $id: msgId+msgId+fileSize,
+          $id: msgId + msgId + fileSize,
           msgId: msgId,
           fileId: fileId,
           fileSize: fileSize,
@@ -175,19 +183,45 @@ async function DeleteFolder(Id: string) {
   );
 }
 
-async function PushUser(id: string) {
-  const UserCheck = await CheckUser(id);
-  if (UserCheck === undefined) {
-    const created = await CreateUser(id);
-    if (created !== undefined) {
-      console.log("User Created");
-    }
+// async function PushUser(id: string) {
+//   const UserCheck = await CheckUser(id);
+//   if (UserCheck === undefined) {
+//     const created = await CreateUser(id);
+//     if (created !== undefined) {
+//       console.log("User Created");
+//     }
+//   }
+//   console.log("User Exists");
+// }
+
+//////////////////////// LOGIN USING EMAIL OTP ///////////////////////////////////////////
+
+async function SignUp(email: string) {
+  try {
+    const sessionToken = await AppwriteUser.createEmailToken(
+      ID.unique(),
+      email
+    );
+    const userId = sessionToken.userId;
+    return userId;
+  } catch (error: any) {
+    console.log(error);
   }
-  console.log("User Exists");
+}
+
+async function SignIn(userId: string, code: string) {
+  try {
+    const session = await AppwriteUser.createSession(userId, code);
+    return session;
+  } catch (error: any) {
+    console.log(error);
+  }
 }
 
 export {
-  PushUser,
+  SignIn,
+  SignUp,
+  // PushUser,
   CreateUser,
   CheckUser,
   CreateUpload,

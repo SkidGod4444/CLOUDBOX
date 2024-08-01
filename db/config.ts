@@ -1,5 +1,3 @@
-import { configDotenv } from "dotenv";
-configDotenv();
 
 import { Account, Client, Databases } from "appwrite";
 // Init your Web SDK
@@ -13,6 +11,5 @@ AppwriteClient
 ;
 const AppwriteDB = new Databases(AppwriteClient);
 const AppwriteUser = new Account(AppwriteClient);
-
 
 export { AppwriteDB, AppwriteClient, AppwriteUser };

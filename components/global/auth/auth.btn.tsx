@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Fingerprint } from 'lucide-react';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Fingerprint } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,45 +12,45 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
-import { CheckUser, CreateUser, PushUser } from '@/db/functions';
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { CreateUser } from "@/db/functions";
+import { AuthFormCard } from "./auth.form";
 
 export default function AuthBtn() {
-  const [cloudKey, setCloudKey] = useState('');
-  
+  // const [cloudKey, setCloudKey] = useState('');
+
   const handleContinue = () => {
-    if (cloudKey.trim() !== '') {
-      if (typeof window !== 'undefined') {
-      localStorage.setItem('CloudKey', cloudKey);
-      CreateUser(cloudKey)
-      }
+    if (typeof window !== "undefined") {
+      window.location.href = "/auth";
     }
-    setTimeout(() => {
-      window.location.reload();
-    }, 5000);
   };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger>
         <Button variant="outline">
-          <Fingerprint className='h-5 w-5 mr-2 text-primary' /> Authenticate
+          <Fingerprint className="h-5 w-5 mr-2 text-primary" /> Sign In
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Authenticate</AlertDialogTitle>
+          <AlertDialogTitle>Note!</AlertDialogTitle>
           <AlertDialogDescription>
-            Join our official Telegram channel and follow the steps. And enter your CloudKey & continue.
+            You will be redirected to Auth page & join our official telegram
+            channel to setup cloudbox. Click on continue to proceed!
           </AlertDialogDescription>
-          <Input placeholder="Enter Your CloudKey" value={cloudKey} onChange={(e) => setCloudKey(e.target.value)} />
+
+          {/* <Input placeholder="Enter Your CloudKey" value={cloudKey} onChange={(e) => setCloudKey(e.target.value)} /> */}
         </AlertDialogHeader>
         <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Link href="https://t.me/cloudbox_storage">
-            <AlertDialogCancel>Get CloudKey</AlertDialogCancel>
+            <AlertDialogAction>Join </AlertDialogAction>
           </Link>
-          <AlertDialogAction onClick={handleContinue}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleContinue}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

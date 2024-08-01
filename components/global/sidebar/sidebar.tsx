@@ -45,20 +45,20 @@ export default function SideNavbar({}: Props) {
             variant: "default"
           },
           {
-            title: "Add Folder",
-            href: "/",
+            title: "Folders",
+            href: "/folders",
             icon: FolderPlus,
             variant: "default"
           },
           {
             title: "All Files",
-            href: "/",
+            href: "/uploads",
             icon: FileBox,
             variant: "default"
           },
           {
             title: "Shared",
-            href: "/",
+            href: "/shares",
             icon: Share2,
             variant: "default"
           }
