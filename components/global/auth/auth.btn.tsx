@@ -37,17 +37,19 @@ export default function AuthBtn() {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            You will be redirected to Auth page.Click on continue to proceed!
+            You will be redirected to Auth page. Click on continue to proceed!
             Kindly join the telegram channel to get your cloud key.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
+          <div className="flex flex-row justify-between mt-2 gap-5">
           <Link href="https://t.me/cloudbox_storage">
-            <AlertDialogCancel>Join Channel</AlertDialogCancel>
+            <AlertDialogAction>Join Channel</AlertDialogAction>
           </Link>
           <AlertDialogAction onClick={handleContinue}>
             Continue
           </AlertDialogAction>
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

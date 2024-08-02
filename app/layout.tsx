@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "unlimited",
     "storage",
     "saidev dhal",
-    "saidev dhal projects"
+    "saidev dhal projects",
   ],
   icons: {
     icon: [

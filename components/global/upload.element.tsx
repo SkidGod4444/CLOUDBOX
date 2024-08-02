@@ -186,7 +186,7 @@ export default function UploadElement() {
             <Lock className="h-8 w-8 text-primary" />
             <p className="mb-2 text-sm text-gray-500 ">
               <span className="font-bold text-primary">
-                Authorize To Upload
+                Authentication Needed!
               </span>
             </p>
           </div>

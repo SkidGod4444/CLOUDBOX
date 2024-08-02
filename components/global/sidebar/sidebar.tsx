@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 import { useWindowWidth } from "@react-hook/window-size";
 import { Nav } from "./nav";
-import { ChevronsLeft, ChevronsRight, Code2, FileBox, Fingerprint, Flame, FolderOpen, FolderPlus, LayoutDashboard, Send, Settings, Share2, ShoppingCart, UploadCloud, UsersRound } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Code2, Compass, FileBox, Fingerprint, Flame, FolderOpen, FolderPlus, LayoutDashboard, Send, Settings, Share2, ShoppingCart, UploadCloud, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function SideNavbar({}: Props) {
@@ -42,25 +42,31 @@ export default function SideNavbar({}: Props) {
             title: "Upload",
             href: "/",
             icon: UploadCloud,
-            variant: "default"
+            variant: "ghost"
+          },
+          {
+            title: "Browse",
+            href: "/browse",
+            icon: Compass,
+            variant: "ghost"
           },
           {
             title: "Folders",
             href: "/folders",
             icon: FolderPlus,
-            variant: "default"
+            variant: "ghost"
           },
           {
             title: "All Files",
             href: "/uploads",
             icon: FileBox,
-            variant: "default"
+            variant: "ghost"
           },
           {
             title: "Shared",
             href: "/shares",
             icon: Share2,
-            variant: "default"
+            variant: "ghost"
           }
         ]}
       />
