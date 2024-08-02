@@ -35,18 +35,15 @@ export default function AuthBtn() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Note!</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            You will be redirected to Auth page & join our official telegram
-            channel to setup cloudbox. Click on continue to proceed!
+            You will be redirected to Auth page.Click on continue to proceed!
+            Kindly join the telegram channel to get your cloud key.
           </AlertDialogDescription>
-
-          {/* <Input placeholder="Enter Your CloudKey" value={cloudKey} onChange={(e) => setCloudKey(e.target.value)} /> */}
         </AlertDialogHeader>
         <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Link href="https://t.me/cloudbox_storage">
-            <AlertDialogAction>Join </AlertDialogAction>
+            <AlertDialogCancel>Join Channel</AlertDialogCancel>
           </Link>
           <AlertDialogAction onClick={handleContinue}>
             Continue

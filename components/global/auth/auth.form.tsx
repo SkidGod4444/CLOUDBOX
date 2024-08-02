@@ -21,10 +21,11 @@ import Image from "next/image";
 import { CheckCheck } from "lucide-react";
 import { useUser } from "@/context/user.context";
 import { CheckUser, CreateUser } from "@/db/functions";
+import { useToast } from "@/components/ui/use-toast";
 
 export function AuthFormCard() {
   const user = useUser();
-//   const [name, setName] = useState("");
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -37,16 +38,25 @@ export function AuthFormCard() {
     const res = await user.signup(email);
     if (res) {
       setIsOtpSent(true);
+      toast({
+        description: "OTP sent successfully!",
+      });
     }
   };
 
   const handleContinue = async () => {
     const isUserExist = await CheckUser(email);
-    if (isUserExist) {
+    if (!isUserExist) {
       await CreateUser(email);
+      toast({
+        description: "Signed Up successfully!",
+      });
     }
     await user.signin(otp);
-    // window.location.href = "/";
+    toast({
+      description: "Signed In successfully!",
+    });
+    window.location.href = "/";
   };
 
   const handleReset = () => {

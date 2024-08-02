@@ -27,8 +27,10 @@ async function CheckUser(email: string) {
     [Query.equal("email", email)]
   );
   if (promise !== undefined) {
+    console.log(promise)
     return true;
   } else {
+    console.log(promise)
     return false;
   }
 }
@@ -218,10 +220,42 @@ async function SignIn(userId: string, code: string) {
   }
 }
 
+async function SignName(name: string) {
+  try {
+    await AppwriteUser.updateName(name);
+    return true;
+  } catch (error: any) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function SignKey(key: string) {
+  try {
+    await AppwriteUser.updatePrefs({"cloud-key": key});
+    return true;
+  } catch (error: any) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function GetKey() {
+  try {
+    const res = await AppwriteUser.getPrefs();
+    return res?.['cloud-key'];
+  } catch (error: any) {
+    console.log(error);
+    return false;
+  }
+}
+
 export {
   SignIn,
   SignUp,
-  // PushUser,
+  SignName,
+  SignKey,
+  GetKey,
   CreateUser,
   CheckUser,
   CreateUpload,

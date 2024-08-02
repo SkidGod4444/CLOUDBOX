@@ -17,7 +17,7 @@ export default function UploadPreview({ file, removeFile }: UploadPreviewProps &
                 <MdOutlineUploadFile className='h-10 w-10 text-primary'/>
                 <div className='text-left'>
                     <h2>
-                        {truncateFileName(file.name, 15)}
+                        {truncateFileName(file.name, 20)}
                     </h2>
                     <h2 className='text-[13px] text-gray-500'>
                        {(file.size/(1024 * 1024)).toFixed(2)} MB

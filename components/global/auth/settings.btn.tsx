@@ -13,13 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@/context/user.context";
 import { ClipboardCopy, LogOut } from "lucide-react";
-
-const handleUnAuth = () => {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("CloudKey");
-    window.location.reload();
-  }
-};
+import { GetKey, SignKey, SignName } from "@/db/functions";
 
 const handleCopy = () => {
   if (typeof window !== "undefined") {
@@ -30,21 +24,50 @@ const handleCopy = () => {
   }
 };
 
-const cloudKeyValue = () => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("CloudKey") ?? "";
-  }
-};
-
 export default function SettingsBtn() {
   const { toast } = useToast();
-  const { current } = useUser();
-  const [isNameTyping, setIsNameTyping] = useState(false);
-  const [isName, setIsName] = useState<string>(current?.name ?? "");
+  const { current, signout } = useUser();
+  const [isName, setIsName] = useState(false);
+  const [isKey, setIsKey] = useState(false);
+  const [nameValue, setNameValue] = useState<string>(current?.name ?? "");
+  const [keyValue, setKeyValue] = useState<string>("");
+
+  const handleSave = async () => {
+    const getkey = await GetKey();
+    if (current?.name == "") {
+      await SignName(nameValue);
+      setIsName(true);
+      toast({
+        description: "Successfully saved your name!",
+      });
+    } else {
+      if (Object.keys(getkey).length == 0 || "" || undefined) {
+        await SignKey(keyValue);
+        setIsKey(true);
+        toast({
+          description: "Successfully saved your key!",
+        });
+      }
+    }
+    // console.log(await GetKey())
+  };
+
+  const handleSignOut = async () => {
+    await signout();
+    toast({
+      description: "Signed Out successfully!",
+    });
+    window.location.reload();
+  };
 
   useEffect(() => {
-    if (current?.name) {
-      setIsNameTyping(true);
+    if (current?.name !== "") {
+      setIsName(true);
+      setNameValue(current?.name!);
+    }
+    if (current?.prefs?.["cloud-key"] !== 0 || "" || undefined) {
+      setIsKey(true);
+      setKeyValue(current?.prefs?.["cloud-key"]);
     }
   }, [current]);
   return (
@@ -64,29 +87,35 @@ export default function SettingsBtn() {
           <div className="flex flex-col my-10 items-start justify-center gap-2">
             <span className="text-sm font-bold">Name</span>
             <Input
-              disabled={isNameTyping}
+              disabled={isName}
               type="text"
-              placeholder="Enter Your Name"
-              value={isName}
-              onChange={(e) => setIsName(e.target.value)}
+              placeholder="Enter your name"
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
             />
             <span className="text-sm font-bold">Email</span>
             <Input
               disabled
               type="email"
-              placeholder="User Email"
+              placeholder="Enter your email"
               value={current?.email}
             />
             <span className="text-sm font-bold">Key</span>
             <Input
-              disabled
+              disabled={isKey}
               type="text"
-              placeholder="CloudKey Not Found!"
-              value={cloudKeyValue()}
+              placeholder="Enter your cloud key"
+              value={keyValue}
+              onChange={(e) => setKeyValue(e.target.value)}
             />
           </div>
-          {!isNameTyping ? (
-            <Button onClick={handleUnAuth} type="submit" variant="secondary">
+          {!isName || !isKey ? (
+            <span className="text-sm text-muted-foreground my-5">
+              Be careful you can&apos;t change your details again.
+            </span>
+          ) : null}
+          {!isName || !isKey ? (
+            <Button onClick={handleSave} type="submit" variant="secondary">
               Save Details
             </Button>
           ) : (
@@ -102,8 +131,8 @@ export default function SettingsBtn() {
               >
                 <ClipboardCopy className="h-5 w-5 mr-2" /> Copy Key
               </Button>
-              <Button onClick={handleUnAuth} type="submit" variant="outline">
-              <LogOut className="h-5 w-5 mr-2" /> Sign Out
+              <Button onClick={handleSignOut} type="submit" variant="outline">
+                <LogOut className="h-5 w-5 mr-2" /> Sign Out
               </Button>
             </div>
           )}
