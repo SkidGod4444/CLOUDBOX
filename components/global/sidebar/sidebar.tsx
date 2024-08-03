@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 
 import { useWindowWidth } from "@react-hook/window-size";
 import { Nav } from "./nav";
-import { ChevronsLeft, ChevronsRight, Code2, Compass, FileBox, Fingerprint, Flame, FolderOpen, FolderPlus, LayoutDashboard, Send, Settings, Share2, ShoppingCart, UploadCloud, UsersRound } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Compass, FileBox, FolderPlus, Share2, UploadCloud } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/context/user.context";
+import { NavBarItems, PublicNavBarItems } from "@/db/constants";
 
 export default function SideNavbar({}: Props) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const {current} = useUser();
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 800;
 
@@ -37,38 +39,7 @@ export default function SideNavbar({}: Props) {
       )}
       <Nav
         isCollapsed={mobileWidth ? true : isCollapsed}
-        links={[
-          {
-            title: "Upload",
-            href: "/",
-            icon: UploadCloud,
-            variant: "ghost"
-          },
-          {
-            title: "Browse",
-            href: "/browse",
-            icon: Compass,
-            variant: "ghost"
-          },
-          {
-            title: "Folders",
-            href: "/folders",
-            icon: FolderPlus,
-            variant: "ghost"
-          },
-          {
-            title: "All Files",
-            href: "/uploads",
-            icon: FileBox,
-            variant: "ghost"
-          },
-          {
-            title: "Shared",
-            href: "/shares",
-            icon: Share2,
-            variant: "ghost"
-          }
-        ]}
+        links={current ? NavBarItems : PublicNavBarItems}
       />
     </div>
   );

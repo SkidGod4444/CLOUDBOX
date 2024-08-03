@@ -39,7 +39,7 @@ export function AuthFormCard() {
     if (res) {
       setIsOtpSent(true);
       toast({
-        description: "OTP sent successfully!",
+        description: "OTP sent successfully! (check your mail box)",
       });
     }
   };

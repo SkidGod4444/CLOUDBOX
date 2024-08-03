@@ -232,7 +232,21 @@ async function SignName(name: string) {
 
 async function SignKey(key: string) {
   try {
-    await AppwriteUser.updatePrefs({"cloud-key": key});
+    const prefs = await AppwriteUser.getPrefs();
+    prefs["cloud-key"] = key;
+    await AppwriteUser.updatePrefs(prefs);
+    return true;
+  } catch (error: any) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function SignIsNsfw(val: "true" | "false") {
+  try {
+    const prefs = await AppwriteUser.getPrefs();
+    prefs["is-nsfw"] = val;
+    await AppwriteUser.updatePrefs(prefs);
     return true;
   } catch (error: any) {
     console.log(error);
@@ -250,12 +264,24 @@ async function GetKey() {
   }
 }
 
+async function GetIsNsfw() {
+  try {
+    const res = await AppwriteUser.getPrefs();
+    return res?.['is-nsfw'];
+  } catch (error: any) {
+    console.log(error);
+    return false;
+  }
+}
+
 export {
   SignIn,
   SignUp,
   SignName,
   SignKey,
+  SignIsNsfw,
   GetKey,
+  GetIsNsfw,
   CreateUser,
   CheckUser,
   CreateUpload,

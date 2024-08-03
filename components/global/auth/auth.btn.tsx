@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Fingerprint } from "lucide-react";
+import { LogIn } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,13 +12,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { CreateUser } from "@/db/functions";
-import { AuthFormCard } from "./auth.form";
 
 export default function AuthBtn() {
-  // const [cloudKey, setCloudKey] = useState('');
 
   const handleContinue = () => {
     if (typeof window !== "undefined") {
@@ -30,7 +26,7 @@ export default function AuthBtn() {
     <AlertDialog>
       <AlertDialogTrigger>
         <Button variant="outline">
-          <Fingerprint className="h-5 w-5 mr-2 text-primary" /> Sign In
+          <LogIn className="h-5 w-5 mr-2 text-primary" /> Sign In
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

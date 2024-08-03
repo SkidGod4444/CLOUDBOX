@@ -97,7 +97,8 @@ export function Nav({ links, isCollapsed }: NavProps) {
               </Link>
             )
           )}
-          <Separator />
+          {/* <Separator /> */}
+
           {/* <div>
             <Button className="dark:bg-muted dark:text-primary dark:hover:bg-primary dark:hover:text-white">
               <FolderPlus className="mr-2 h-5 w-5" />
