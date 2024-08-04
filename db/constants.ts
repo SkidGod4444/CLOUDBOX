@@ -100,7 +100,7 @@ export const CardItems: CardItemProps[] = [
     cid: "3995",
     title: "Google",
     description:
-      "A multinational technology company that specializes in Internet-related services and products.",
+      "A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.",
     link: "https://google.com",
     img: "https://stripe.com",
     isFile: false,
@@ -111,7 +111,7 @@ export const CardItems: CardItemProps[] = [
     cid: "3996",
     title: "Meta",
     description:
-      "A technology company that focuses on building products that advance Facebook's mission of bringing the world closer together.",
+      "A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.",
     link: "https://meta.com",
     img: "https://stripe.com",
     isFile: false,
@@ -125,15 +125,15 @@ export const CardItems: CardItemProps[] = [
       "A multinational technology company focusing on e-commerce, cloud computing, digital streaming, and artificial intelligence.",
     link: "https://amazon.com",
     img: "https://stripe.com",
-    isFile: false,
-    isFolder: true,
+    isFile: true,
+    isFolder: false,
     isNsfw: true
   },
   {
     cid: "3998",
     title: "Microsoft",
     description:
-      "A multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and related services.",
+      "A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.",
     link: "https://microsoft.com",
     img: "https://stripe.com",
     isFile: false,

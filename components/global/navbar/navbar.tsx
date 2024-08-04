@@ -3,48 +3,15 @@ import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import AuthBtn from "../auth/auth.btn";
 import { Logo } from "../logo";
-import SourceBtn from "./source.btn";
 import CommunityBtn from "./community.btn";
 import SettingsBtn from "../auth/settings.btn";
 import { useUser } from "@/context/user.context";
 import RulesBtn from "./rules.btn";
+import SourceBtn from "./source.btn";
 // import { PushUser } from '@/db/functions';
 
 export default function HomeNavbar() {
-  const [cloudKeyExists, setCloudKeyExists] = useState(false);
   const { current } = useUser();
-
-  useEffect(() => {
-    // Check local storage for the presence of 'CloudKey' when the component mounts
-    if (typeof window !== "undefined") {
-      const cloudKey = localStorage.getItem("CloudKey");
-      if (cloudKey) {
-        setCloudKeyExists(true);
-        // PushUser(cloudKey.toString());
-      } else {
-        setCloudKeyExists(false);
-      }
-    }
-
-    // Add event listener for changes to local storage
-    const handleStorageChange = () => {
-      if (typeof window !== "undefined") {
-        const updatedCloudKey = localStorage.getItem("CloudKey");
-        if (updatedCloudKey) {
-          setCloudKeyExists(true);
-        } else {
-          setCloudKeyExists(false);
-        }
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
 
   return (
     <div

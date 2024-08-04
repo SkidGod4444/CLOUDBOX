@@ -20,7 +20,6 @@ export default function FilterElement() {
         <SelectGroup>
           <SelectLabel>Choose any one</SelectLabel>
           <Separator className="mb-2"/>
-          <SelectItem value="user">USER</SelectItem>
           <SelectItem value="title">TITLE</SelectItem>
           <SelectItem value="desc">DESCRIPTION</SelectItem>
           <SelectItem value="cloud-id">CLOUDBOX ID</SelectItem>

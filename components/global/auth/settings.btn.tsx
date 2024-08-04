@@ -147,7 +147,7 @@ export default function SettingsBtn() {
             <div className="flex flex-row gap-2 mt-10">
               <div className="flex flex-row items-center py-4 gap-2 bg-secondary rounded-md h-[40px] w-[140px] px-2">
                 <span className="text-sm font-bold text-primary">NSFW:</span>
-                <Button variant="default" size="sm" onClick={handleIsNsfw}>
+                <Button variant={isNsfw ? "default" : "outline"} size="sm" onClick={handleIsNsfw}>
                   {isNsfw ? "Enabled" : "Disabled"}
                 </Button>
               </div>

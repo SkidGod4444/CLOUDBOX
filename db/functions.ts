@@ -274,7 +274,23 @@ async function GetIsNsfw() {
   }
 }
 
+///////////////////////////////////////
+
+async function fetchStars() {
+  try {
+    const response = await fetch("https://api.github.com/repos/SkidGod4444/CLOUDBOX");
+    const jsonData = await response.json();
+    const starsCount = jsonData.stargazers_count;
+    return starsCount;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
 export {
+  fetchStars, 
+  
   SignIn,
   SignUp,
   SignName,

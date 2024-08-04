@@ -21,6 +21,8 @@ import {
 import { Skeleton } from "./skeleton";
 import { useUser } from "@/context/user.context";
 import { useToast } from "./use-toast";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export const CardHoverEffect = ({
   items,
@@ -130,20 +132,6 @@ export const CardHoverEffect = ({
               <CardDescription>{item.description}</CardDescription>
             )}
             <div className="flex flex-row justify-between items-center mt-2">
-            <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-              <Button size="sm" variant="ghost">
-                <Eye className="h-4 w-4 mr-2" />
-                120
-              </Button>
-              </TooltipTrigger>
-                  <TooltipContent className="bg-white">
-                    <p className="text-black">120 Views</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -157,6 +145,55 @@ export const CardHoverEffect = ({
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
+
+              <Dialog>
+                <DialogTrigger>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        {current ? (
+                          <Button size="sm" variant="outline">
+                            Send to me
+                          </Button>
+                        ) : (
+                          <Button disabled size="sm" variant="outline">
+                            Sign In to access
+                          </Button>
+                        )}
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-white">
+                        <p className="text-black">Send to yourself/others</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Share with others</DialogTitle>
+                    <DialogDescription>
+                      Enter the user cloud-key to share this file/folder. This
+                      action cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex items-center space-x-2">
+                    <div className="grid flex-1 gap-2">
+                      <Label htmlFor="link" className="sr-only">
+                        Link
+                      </Label>
+                      <Input id="link" placeholder="Enter the user's key" />
+                    </div>
+                    <Button type="submit" size="sm" className="px-3">
+                      <span>Send</span>
+                    </Button>
+                  </div>
+                  <div className="flex flex-col gap-4 justify-center items-center">
+                    <span className="text-sm text-muted-foreground font-bold">OR</span>
+                  </div>
+                  <Button type="submit" size="sm" className="px-3">
+                    <span>Send to me</span>
+                  </Button>
+                </DialogContent>
+              </Dialog>
             </div>
           </Card>
         </div>
@@ -175,7 +212,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-xl cursor-pointer h-full w-full p-4 overflow-hidden bg-muted border-2 border-transparent group-hover:bg-black group-hover:border-primary relative z-20 flex flex-col",
+        "rounded-xl cursor-pointer h-[300px] w-full p-4 overflow-hidden bg-muted border-2 border-transparent group-hover:bg-black group-hover:border-primary relative z-20 flex flex-col",
         className
       )}
     >
@@ -192,7 +229,12 @@ export const CardTitle = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-8", className)}>
+    <h4
+      className={cn(
+        "text-zinc-100 font-bold tracking-wide mt-8 text-start",
+        className
+      )}
+    >
       {children}
     </h4>
   );
@@ -208,7 +250,7 @@ export const CardDescription = ({
   return (
     <p
       className={cn(
-        "text-zinc-400 tracking-wide leading-relaxed text-sm mt-5",
+        "text-zinc-400 tracking-wide leading-relaxed text-sm mt-5 text-start",
         className
       )}
     >
