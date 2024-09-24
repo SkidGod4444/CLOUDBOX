@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MdOutlineSettings } from "react-icons/md";
 import {
   Dialog,
@@ -13,7 +13,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@/context/user.context";
 import { ClipboardCopy, LogOut } from "lucide-react";
-import { GetKey, SignIsNsfw, SignKey, SignName } from "@/db/functions";
 
 export default function SettingsBtn() {
   const { toast } = useToast();
@@ -25,29 +24,14 @@ export default function SettingsBtn() {
   const [keyValue, setKeyValue] = useState<string>("");
 
   const handleCopy = () => {
-    const CloudKey = current?.prefs?.["cloud-key"];
+    const CloudKey = "Lucifer is alive!"
     if (CloudKey) {
       navigator.clipboard.writeText(CloudKey ?? "");
     }
   };
 
   const handleSave = async () => {
-    const getkey = await GetKey();
-    if (current?.name === "") {
-      await SignName(nameValue);
-      setIsName(true);
-      toast({
-        description: "Successfully saved your name!",
-      });
-    } else {
-      if (!getkey || Object.keys(getkey).length === 0) {
-        await SignKey(keyValue);
-        setIsKey(true);
-        toast({
-          description: "Successfully saved your key!",
-        });
-      }
-    }
+    //lol
   };
 
   const handleSignOut = async () => {
@@ -62,14 +46,14 @@ export default function SettingsBtn() {
 
   const handleIsNsfw = async () => {
     if (isNsfw) {
-      await SignIsNsfw("false");
+      // await SignIsNsfw("false");
       setIsNsfw(false);
       toast({
         description: "You are now safe from NSFW contents.",
       });
       // window.location.reload();
     } else {
-      await SignIsNsfw("true");
+      // await SignIsNsfw("true");
       setIsNsfw(true);
       toast({
         description: "You can now access NSFW contents.",
@@ -77,25 +61,6 @@ export default function SettingsBtn() {
       // window.location.reload();
     }
   };
-
-  useEffect(() => {
-    if (current?.name !== "") {
-      setIsName(true);
-      setNameValue(current?.name!);
-    }
-    if (current?.prefs?.["cloud-key"] !== undefined) {
-      setIsKey(true);
-      setKeyValue(current?.prefs?.["cloud-key"]);
-    } else {
-      setIsKey(false);
-      setKeyValue("");
-    }
-    if (current?.prefs?.["is-nsfw"] === "true") {
-      setIsNsfw(true);
-    } else {
-      setIsNsfw(false);
-    }
-  }, [current]);
 
   return (
     <Dialog>
