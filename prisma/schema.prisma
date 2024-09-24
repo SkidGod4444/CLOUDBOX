@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id
+  email          String   @unique
+  name           String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  hashedPassword String?
+  chatId         String?  @unique
+  isNsfw         Boolean? @default(false)
+  xata_id        String   @unique(map: "User__pgroll_new_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  files          File[]
+  folders        Folder[]
+  Session        Session?
+  shares         Share[]
+}
+
+model File {
+  id             String   @id @default(uuid())
+  name           String
+  size           Int
+  type           String
+  userId         String
+  folderId       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  xata_id        String   @unique(map: "File__pgroll_new_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  folder         Folder?  @relation(fields: [folderId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
+  shares         Share[]
+}
+
+model Folder {
+  id             String   @id @default(uuid())
+  name           String
+  userId         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  xata_id        String   @unique(map: "Folder__pgroll_new_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  files          File[]
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model Share {
+  id             String   @id @default(uuid())
+  fileId         String
+  fromId         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  xata_id        String   @unique(map: "Share__pgroll_new_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  file           File     @relation(fields: [fileId], references: [id])
+  user           User     @relation(fields: [fromId], references: [id])
+}
+
+model Session {
+  id             String   @id @unique
+  userId         String   @unique
+  expiresAt      DateTime
+  xata_id        String   @unique(map: "Session__pgroll_new_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

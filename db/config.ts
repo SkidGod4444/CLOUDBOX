@@ -1,15 +1,13 @@
+import { PrismaClient } from "@prisma/client";
 
-import { Account, Client, Databases } from "appwrite";
-// Init your Web SDK
-const AppwriteClient = new Client();
-const EndPoint: string = process.env.APPWRITE_ID || "https://cloud.appwrite.io/v1"
-const ProjectId: string = process.env.APPWRITE_PROJECT_ID || "65d4e0ff236bc8377158";
+const client = new PrismaClient({
+  log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+});
 
-AppwriteClient
-    .setEndpoint(EndPoint) // Your Appwrite Endpoint
-    .setProject(ProjectId) // Your project ID
-;
-const AppwriteDB = new Databases(AppwriteClient);
-const AppwriteUser = new Account(AppwriteClient);
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-export { AppwriteDB, AppwriteClient, AppwriteUser };
+export const prisma = globalForPrisma.prisma ?? client;
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = client;

@@ -15,6 +15,7 @@ export default function Auth() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       {current ? null : <AuthFormCard />}
+      {current?.email}
     </div>
   );
 }

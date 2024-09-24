@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,152 +11,215 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import Image from "next/image";
-import { CheckCheck } from "lucide-react";
-import { useUser } from "@/context/user.context";
-import { CheckUser, CreateUser } from "@/db/functions";
 import { useToast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { signUp, signIn } from "@/lib/auth/auth.actions";
+import { useRouter } from "next/navigation";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+export const signUpSchema = z.object({
+  name: z.string().min(5, "Name must be at least 5 characters long"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+  confirmPassword: z.string().min(8, "Password must be at least 8 characters long"),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+export const signInSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+});
 
 export function AuthFormCard() {
-  const user = useUser();
+  const [isSignUp, setIsSignUp] = React.useState(false);
   const { toast } = useToast();
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
+  const router = useRouter();
 
-  const handleOTPChange = (value: string) => {
-    setOtp(value);
-  };
+  const schema = isSignUp ? signUpSchema : signInSchema;
 
-  const handleSendOtp = async () => {
-    const res = await user.signup(email);
-    if (res) {
-      setIsOtpSent(true);
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof schema>) => {
+    try {
+      const action = isSignUp ? signUp : signIn;
+      const res = await action(values as any);
+      if (res.success) {
+        toast({
+          title: isSignUp ? "Account created successfully" : "Signed in successfully",
+          description: "Redirecting to home...",
+        });
+        router.push('/');
+      } else {
+        toast({
+          title: "Error",
+          description: res.error,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
       toast({
-        description: "OTP sent successfully! (check your mail box)",
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
       });
     }
-  };
-
-  const handleContinue = async () => {
-    const isUserExist = await CheckUser(email);
-    if (!isUserExist) {
-      await CreateUser(email);
-      toast({
-        description: "Signed Up successfully!",
-      });
-    }
-    await user.signin(otp);
-    toast({
-      description: "Signed In successfully!",
-    });
-    window.location.href = "/";
-  };
-
-  const handleReset = () => {
-    // setName("");
-    setEmail("");
-    setOtp("");
-    setIsOtpSent(false);
   };
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>
-          <div className="mb-3">
-            <Image
-              src="/cloudboxlogo.png"
-              alt="logo"
-              width={50}
-              height={50}
-              className="dark:hidden"
-            />
-            <Image
-              src="/cloudboxpinklogo.png"
-              alt="logo"
-              width={50}
-              height={50}
-              className="hidden dark:block"
-            />
-          </div>
-          Authenticate
-        </CardTitle>
-        <CardDescription>Continue with email OTP sign in.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="grid w-full items-center gap-4">
-            {/* <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                value={name}
-                placeholder="Enter your name"
-                onChange={(e) => setName(e.target.value)}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="w-[400px]">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">
+            <motion.div
+              className="mb-2"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            >
+              <Image
+                src="/cloudboxlogo.png"
+                alt="logo"
+                width={40}
+                height={40}
+                className="dark:hidden"
               />
-            </div> */}
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                value={email}
-                placeholder="Enter your email"
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isOtpSent}
+              <Image
+                src="/cloudboxpinklogo.png"
+                alt="logo"
+                width={40}
+                height={40}
+                className="hidden dark:block"
               />
-            </div>
-            {!isOtpSent ? (
-              <Button size="sm" onClick={handleSendOtp}>
-                Send OTP
-              </Button>
-            ) : (
-              <Button size="sm" variant="outline" disabled>
-                <CheckCheck className="h-5 w-5 mr-2" /> Sent OTP
-              </Button>
-            )}
-
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="otp">OTP</Label>
-              <span className="text-sm text-muted-foreground">
-                Enter the 6 digit OTP sent to your email.
-              </span>
-              <div className="flex justify-center items-center">
-                <InputOTP
-                  maxLength={6}
-                  value={otp}
-                  onChange={handleOTPChange}
-                  disabled={!isOtpSent}
+            </motion.div>
+            {isSignUp ? "Sign Up" : "Sign In"}
+          </CardTitle>
+          <CardDescription>
+            {isSignUp
+              ? "Create a new account"
+              : "Access your account"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                {isSignUp && (
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {isSignUp && (
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full mt-4"
                 >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} aria-placeholder="0" />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </div>
-            </div>
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="secondary" onClick={handleReset}>
-          Reset
-        </Button>
-        <Button onClick={handleContinue}>Continue</Button>
-      </CardFooter>
-    </Card>
+                  <Button type="submit" className="w-full">
+                    {isSignUp ? "Sign Up" : "Sign In"}
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter>
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full"
+          >
+            <Button
+              variant="link"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="w-full text-sm"
+            >
+              {isSignUp
+                ? "Already have an account? Sign In"
+                : "Don't have an account? Sign Up"}
+            </Button>
+          </motion.div>
+        </CardFooter>
+      </Card>
+    </motion.div>
   );
 }

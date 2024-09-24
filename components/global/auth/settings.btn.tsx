@@ -25,10 +25,10 @@ export default function SettingsBtn() {
   const [keyValue, setKeyValue] = useState<string>("");
 
   const handleCopy = () => {
-      const CloudKey = current?.prefs?.["cloud-key"];
-      if (CloudKey) {
-        navigator.clipboard.writeText(CloudKey ?? "");
-      }
+    const CloudKey = current?.prefs?.["cloud-key"];
+    if (CloudKey) {
+      navigator.clipboard.writeText(CloudKey ?? "");
+    }
   };
 
   const handleSave = async () => {
@@ -55,7 +55,9 @@ export default function SettingsBtn() {
     toast({
       description: "Signed Out successfully!",
     });
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const handleIsNsfw = async () => {
@@ -65,14 +67,14 @@ export default function SettingsBtn() {
       toast({
         description: "You are now safe from NSFW contents.",
       });
-      window.location.reload();
+      // window.location.reload();
     } else {
       await SignIsNsfw("true");
       setIsNsfw(true);
       toast({
         description: "You can now access NSFW contents.",
       });
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -147,7 +149,11 @@ export default function SettingsBtn() {
             <div className="flex flex-row gap-2 mt-10">
               <div className="flex flex-row items-center py-4 gap-2 bg-secondary rounded-md h-[40px] w-[140px] px-2">
                 <span className="text-sm font-bold text-primary">NSFW:</span>
-                <Button variant={isNsfw ? "default" : "outline"} size="sm" onClick={handleIsNsfw}>
+                <Button
+                  variant={isNsfw ? "default" : "outline"}
+                  size="sm"
+                  onClick={handleIsNsfw}
+                >
                   {isNsfw ? "Enabled" : "Disabled"}
                 </Button>
               </div>

@@ -13,7 +13,7 @@ const fetchStars = async () => {
         next: {
           revalidate: 3600,
         },
-      }
+      },
     );
     if (response.ok) {
       const data = await response.json();
@@ -40,7 +40,7 @@ export default function SourceBtn() {
   }, []);
 
   return (
-    <Link href="https://github.com/SkidGod4444/CLOUDBOX" className="group">
+    <Link href="https://git.new/PkJdogB" className="group">
       <Button variant="outline" size={isSmallScreen ? "icon" : "default"}>
         <Github
           className={

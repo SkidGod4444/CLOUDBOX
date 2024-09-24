@@ -83,7 +83,7 @@ export const CardItems: CardItemProps[] = [
     img: "https://stripe.com",
     isFile: false,
     isFolder: true,
-    isNsfw: false
+    isNsfw: false,
   },
   {
     cid: "3994",
@@ -94,7 +94,7 @@ export const CardItems: CardItemProps[] = [
     img: "https://stripe.com",
     isFile: false,
     isFolder: true,
-    isNsfw: false
+    isNsfw: false,
   },
   {
     cid: "3995",
@@ -105,7 +105,7 @@ export const CardItems: CardItemProps[] = [
     img: "https://stripe.com",
     isFile: false,
     isFolder: true,
-    isNsfw: false
+    isNsfw: false,
   },
   {
     cid: "3996",
@@ -116,7 +116,7 @@ export const CardItems: CardItemProps[] = [
     img: "https://stripe.com",
     isFile: false,
     isFolder: true,
-    isNsfw: false
+    isNsfw: false,
   },
   {
     cid: "3997",
@@ -127,7 +127,7 @@ export const CardItems: CardItemProps[] = [
     img: "https://stripe.com",
     isFile: true,
     isFolder: false,
-    isNsfw: true
+    isNsfw: true,
   },
   {
     cid: "3998",
@@ -138,6 +138,6 @@ export const CardItems: CardItemProps[] = [
     img: "https://stripe.com",
     isFile: false,
     isFolder: true,
-    isNsfw: false
+    isNsfw: false,
   },
 ];

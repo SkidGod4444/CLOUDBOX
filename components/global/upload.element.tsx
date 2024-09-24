@@ -35,7 +35,7 @@ export default function UploadElement() {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
       if (!response.ok) {
@@ -66,7 +66,7 @@ export default function UploadElement() {
         String(file_id),
         String(file_size),
         String(botType),
-        String(userId)
+        String(userId),
       );
       toast({
         title: "Notification",

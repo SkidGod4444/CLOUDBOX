@@ -36,18 +36,18 @@ export default function NumberTicker({
       springValue.on("change", (latest: any) => {
         if (ref.current) {
           ref.current.textContent = Intl.NumberFormat("en-US").format(
-            latest.toFixed(0)
+            latest.toFixed(0),
           );
         }
       }),
-    [springValue]
+    [springValue],
   );
 
   return (
     <span
       className={cn(
         "inline-block tabular-nums text-black dark:text-white tracking-wider",
-        className
+        className,
       )}
       ref={ref}
     />

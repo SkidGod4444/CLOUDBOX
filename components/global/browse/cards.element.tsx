@@ -18,7 +18,7 @@ export default function CardsElement({
 }) {
   return (
     <div className="flex flex-col mt-20 max-w-5xl mx-auto px-8">
-      <SearchElement/>
+      <SearchElement />
       <CardHoverEffect items={item} />
     </div>
   );

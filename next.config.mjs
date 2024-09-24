@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config) => {
+    config.externals.push("@node-rs/argon2", "@node-rs/bcrypt");
+    return config;
+  },
   images: {
-	domains: ['i.imgur.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+      },
+    ],
   },
 };
 

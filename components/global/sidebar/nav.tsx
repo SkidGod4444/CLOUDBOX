@@ -26,6 +26,7 @@ interface NavProps {
 
 export function Nav({ links, isCollapsed }: NavProps) {
   const pathName = usePathname();
+
   return (
     <TooltipProvider>
       <div data-collapsed={isCollapsed} className="group flex flex-col gap-4 ">
@@ -45,7 +46,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
                       link.href === pathName &&
                         "bg-primary text-white hover:text-primary hover:bg-muted",
                       link.href !== pathName &&
-                        "bg-muted hover:bg-primary hover:text-white"
+                        "bg-muted hover:bg-primary hover:text-white",
                     )}
                   >
                     <link.icon className="h-5 w-5" />
@@ -71,14 +72,18 @@ export function Nav({ links, isCollapsed }: NavProps) {
                 href={link.href}
                 className={cn(
                   buttonVariants({
-                    variant: link.href === pathName ? "default" : "ghost",
+                    variant:
+                      link.href === pathName ||
+                      pathName.startsWith(link.href + "/")
+                        ? "default"
+                        : "ghost",
                     size: "default",
                   }),
                   link.href === pathName &&
                     "bg-primary text-white hover:text-primary hover:bg-muted",
                   "justify-start",
                   link.href !== pathName &&
-                    "bg-muted hover:bg-primary hover:text-white"
+                    "bg-muted hover:bg-primary hover:text-white",
                 )}
               >
                 <link.icon className="mr-2 h-5 w-5" />
@@ -88,14 +93,14 @@ export function Nav({ links, isCollapsed }: NavProps) {
                     className={cn(
                       "ml-auto",
                       link.variant === "default" &&
-                        "text-background dark:text-white"
+                        "text-background dark:text-white",
                     )}
                   >
                     {link.label}
                   </span>
                 )}
               </Link>
-            )
+            ),
           )}
           {/* <Separator /> */}
 

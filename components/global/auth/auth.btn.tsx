@@ -15,7 +15,6 @@ import {
 import Link from "next/link";
 
 export default function AuthBtn() {
-
   const handleContinue = () => {
     if (typeof window !== "undefined") {
       window.location.href = "/auth";
@@ -39,12 +38,12 @@ export default function AuthBtn() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <div className="flex flex-row justify-between mt-2 gap-5">
-          <Link href="https://t.me/cloudbox_storage">
-            <AlertDialogAction>Join Channel</AlertDialogAction>
-          </Link>
-          <AlertDialogAction onClick={handleContinue}>
-            Continue
-          </AlertDialogAction>
+            <Link href="https://t.me/cloudbox_storage">
+              <AlertDialogAction>Join Channel</AlertDialogAction>
+            </Link>
+            <AlertDialogAction onClick={handleContinue}>
+              Continue
+            </AlertDialogAction>
           </div>
         </AlertDialogFooter>
       </AlertDialogContent>

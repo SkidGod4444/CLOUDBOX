@@ -1,6 +1,6 @@
-import React from 'react'
-import CardsElement from '@/components/global/browse/cards.element'
-import { CardItems } from '@/db/constants'
+import React from "react";
+import CardsElement from "@/components/global/browse/cards.element";
+import { CardItems } from "@/db/constants";
 
 export default function Browse() {
   return (
@@ -9,5 +9,5 @@ export default function Browse() {
         <CardsElement item={CardItems} />
       </div>
     </main>
-  )
+  );
 }

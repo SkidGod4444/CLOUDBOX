@@ -21,7 +21,7 @@ export default function MobBottomNavbar() {
     <div className="fixed z-50 bottom-4 left-0 right-0 flex justify-center md:hidden lg:hidden">
       <div
         className={cn(
-          "bg-background border-2 border-muted px-5 w-auto p-2 rounded-md"
+          "bg-background border-2 border-muted px-5 w-auto p-2 rounded-md",
         )}
       >
         {current ? (
@@ -128,7 +128,7 @@ export default function MobBottomNavbar() {
               </Button>
             </Link>
 
-            <AuthBtn/>
+            <AuthBtn />
           </div>
         )}
       </div>

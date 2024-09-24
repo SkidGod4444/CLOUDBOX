@@ -17,8 +17,8 @@ export default function SearchElement() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
         </div>
         <div className="flex flex-row gap-2">
-        <FilterByElement />
-        <FilterElement />
+          <FilterByElement />
+          <FilterElement />
         </div>
       </Label>
     </div>

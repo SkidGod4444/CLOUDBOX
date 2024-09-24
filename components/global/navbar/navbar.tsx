@@ -16,7 +16,7 @@ export default function HomeNavbar() {
   return (
     <div
       className={cn(
-        "fixed z-50 bg-background top-0 flex items-center w-full p-3 border-b-2 border-muted shadow-md transition-all duration-300 ease-in-out"
+        "fixed z-50 bg-background top-0 flex items-center w-full p-3 border-b-2 border-muted shadow-md transition-all duration-300 ease-in-out",
       )}
     >
       <Logo />

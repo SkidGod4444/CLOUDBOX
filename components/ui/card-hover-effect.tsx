@@ -38,7 +38,6 @@ export const CardHoverEffect = ({
     isFile: boolean;
     isNsfw: boolean;
     shares?: number;
-    views?: number;
   }[];
   className?: string;
 }) => {
@@ -67,7 +66,7 @@ export const CardHoverEffect = ({
     <div
       className={cn(
         "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10",
-        className
+        className,
       )}
     >
       {items.map((item, idx) => (
@@ -146,54 +145,60 @@ export const CardHoverEffect = ({
                 </Tooltip>
               </TooltipProvider>
 
-              <Dialog>
-                <DialogTrigger>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        {current ? (
+              {current ? (
+                <Dialog>
+                  <DialogTrigger>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
                           <Button size="sm" variant="outline">
                             Send to me
                           </Button>
-                        ) : (
-                          <Button disabled size="sm" variant="outline">
-                            Sign In to access
-                          </Button>
-                        )}
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-white">
-                        <p className="text-black">Send to yourself/others</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Share with others</DialogTitle>
-                    <DialogDescription>
-                      Enter the user cloud-key to share this file/folder. This
-                      action cannot be undone.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="grid flex-1 gap-2">
-                      <Label htmlFor="link" className="sr-only">
-                        Link
-                      </Label>
-                      <Input id="link" placeholder="Enter the user's key" />
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-white">
+                          <p className="text-black">Send to yourself</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Share with others</DialogTitle>
+                      <DialogDescription>
+                        Enter the user cloud-key to share this file/folder. This
+                        action cannot be undone.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex items-center space-x-2">
+                      <div className="grid flex-1 gap-2">
+                        <Label htmlFor="link" className="sr-only">
+                          Link
+                        </Label>
+                        <Input
+                          id="link"
+                          type="number"
+                          placeholder="Enter the user's key"
+                        />
+                      </div>
+                      <Button type="submit" size="sm" className="px-3">
+                        <span>Send</span>
+                      </Button>
+                    </div>
+                    <div className="flex flex-col gap-4 justify-center items-center">
+                      <span className="text-sm text-muted-foreground font-bold">
+                        OR
+                      </span>
                     </div>
                     <Button type="submit" size="sm" className="px-3">
-                      <span>Send</span>
+                      <span>Send to me</span>
                     </Button>
-                  </div>
-                  <div className="flex flex-col gap-4 justify-center items-center">
-                    <span className="text-sm text-muted-foreground font-bold">OR</span>
-                  </div>
-                  <Button type="submit" size="sm" className="px-3">
-                    <span>Send to me</span>
-                  </Button>
-                </DialogContent>
-              </Dialog>
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Button disabled size="sm" variant="outline">
+                  Sign In to access
+                </Button>
+              )}
             </div>
           </Card>
         </div>
@@ -213,7 +218,7 @@ export const Card = ({
     <div
       className={cn(
         "rounded-xl cursor-pointer h-[300px] w-full p-4 overflow-hidden bg-muted border-2 border-transparent group-hover:bg-black group-hover:border-primary relative z-20 flex flex-col",
-        className
+        className,
       )}
     >
       <div className="relative z-50 flex-1">{children}</div>
@@ -232,7 +237,7 @@ export const CardTitle = ({
     <h4
       className={cn(
         "text-zinc-100 font-bold tracking-wide mt-8 text-start",
-        className
+        className,
       )}
     >
       {children}
@@ -251,7 +256,7 @@ export const CardDescription = ({
     <p
       className={cn(
         "text-zinc-400 tracking-wide leading-relaxed text-sm mt-5 text-start",
-        className
+        className,
       )}
     >
       {children}
